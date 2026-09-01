@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://pfhd40ekuqkh" path="res://Textures/Sky/Hammer-export.png" id="5_2ljmv"]
 [ext_resource type="Texture2D" uid="uid://c1yo4rwobu60y" path="res://Textures/Dudes/yo dawg-export.png" id="6_3n6fl"]
 [ext_resource type="PackedScene" uid="uid://oiyjbkjxpf0r" path="res://Models/dasedall.blend" id="7_bkaas"]
+[ext_resource type="Script" uid="uid://b6saqwea01jwh" path="res://Scripts/Prop.gd" id="7_cg2lg"]
 [ext_resource type="Shader" uid="uid://cly23ebh7ho5e" path="res://Textures/Props/NonTriPlanarGeneric.gdshader" id="8_2u8b4"]
 [ext_resource type="Texture2D" uid="uid://brpuvnxi6vb5e" path="res://Models/dasedall_Untitled.png" id="8_bkaas"]
 [ext_resource type="Texture2D" uid="uid://bcofi7as0nxvc" path="res://Textures/Test/daywalker1.png" id="11_tlvbu"]
@@ -196,6 +197,7 @@ heightmap_texture = ExtResource("13_nar7h")
 
 [node name="Moddle" parent="." unique_id=1006448384 instance=ExtResource("1_wbrup")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5346646, 1, 0.27759886)
+AIR_ACCELERATE = 0.2
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=930897794]
 transform = Transform3D(-0.99999845, -1.8277176e-05, 0.001745278, -0.0017380817, 0.10173385, -0.99481046, -0.0001593715, -0.9948118, -0.10173373, 2.0025656, 0.9632857, 0.49846476)
@@ -223,6 +225,7 @@ sky_mode = 1
 [node name="RigidBody3D" type="RigidBody3D" parent="." unique_id=267337422]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 1.827672, 2.8216872)
 collision_layer = 3
+script = ExtResource("7_cg2lg")
 
 [node name="dasedall" parent="RigidBody3D" unique_id=476617785 instance=ExtResource("7_bkaas")]
 

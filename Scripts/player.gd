@@ -7,6 +7,7 @@ extends CharacterBody3D
 @export var RIGHT_STICK_SENSITIVITY : float = 15 ## camera speed on stick controls
 @export var INPUT_BUFFER_TIME : float = 0.1 ## how much time the jump button stays active after pressing (i.e tapping jump right before hitting the ground and it works)
 @export var JUMP_MAX_RISE_TIME : float = 0.2 ## how long you can hold jump to retain jump force
+@export var ACCEL_FACTOR : float = 40.0
 @export var AIR_ACCELERATE : float = .1 ## air acceleration percentage
 
 @onready var camArm : SpringArm3D = $camArm
@@ -25,6 +26,7 @@ var gravity : float = 0 # current vertical velocity
 var lastJump : float = 0
 var lastJumpInput : float = 0
 
+
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED # lock mouse in window
 	camArm.add_excluded_object(self) #keep spring arm from colloding with yourself
@@ -39,7 +41,7 @@ func PlaySoundRandPitch(sound):
 	sound.play()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("ui_close_dialog"): get_tree().quit()
 	var rightStick = Input.get_vector("cam_pan_left","cam_pan_right","cam_pan_up","cam_pan_down")*delta*RIGHT_STICK_SENSITIVITY
 	camInput += rightStick
@@ -80,12 +82,15 @@ func _process(delta: float) -> void:
 
 	
 	
-	var target_vel = move_dir * SPEED
-	var accelerate = .1
+	var current_h_vel = Vector3(velocity.x, 0.0, velocity.z)
+	var target_h_vel = move_dir * SPEED
+	var current_accel = ACCEL_FACTOR 
 	if not is_on_floor():
-		accelerate *= AIR_ACCELERATE
-	velocity.x = move_toward(velocity.x, target_vel.x, accelerate)
-	velocity.z = move_toward(velocity.z, target_vel.z, accelerate)
+		current_accel *= AIR_ACCELERATE
+	var new_h_vel = current_h_vel.move_toward(target_h_vel, current_accel * delta)
+
+	velocity.x = new_h_vel.x
+	velocity.z = new_h_vel.z
 	velocity.y = gravity
 	move_and_slide()
 	

@@ -3,9 +3,6 @@
 [ext_resource type="Script" uid="uid://m1m1yn33irkv" path="res://Scripts/player.gd" id="1_b43ah"]
 [ext_resource type="Shader" uid="uid://cly23ebh7ho5e" path="res://Textures/Props/NonTriPlanarGeneric.gdshader" id="1_x3d5u"]
 [ext_resource type="Texture2D" uid="uid://cc7ypd7vxt4sp" path="res://kenney_pattern-pack/Vector/pattern_27.svg" id="2_b43ah"]
-[ext_resource type="AudioStream" uid="uid://dvgpisxblymse" path="res://Audio/Placeholder/jump.sfxr" id="4_gg3t4"]
-[ext_resource type="AudioStream" uid="uid://1ynnmt2miake" path="res://Audio/kenney_interface-sounds/Audio/maximize_003.ogg" id="5_javds"]
-[ext_resource type="AudioStream" uid="uid://bofhoyjrknkds" path="res://Audio/kenney_interface-sounds/Audio/minimize_003.ogg" id="6_3ygst"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2u8b4"]
 render_priority = 0
@@ -43,7 +40,6 @@ JUMP_FORCE = 4.0
 PUSH_FORCE = 3.0
 RIGHT_STICK_SENSITIVITY = 8.0
 JUMP_MAX_RISE_TIME = 0.3
-AIR_ACCELERATE = 0.3
 
 [node name="Capsule" type="MeshInstance3D" parent="." unique_id=1976700848]
 mesh = SubResource("CapsuleMesh_1cxlk")
@@ -60,16 +56,3 @@ margin = 0.2
 
 [node name="MainCamera" type="Camera3D" parent="camArm" unique_id=556154199]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.8460677)
-far = 9999.0
-
-[node name="AudioListener3D" type="AudioListener3D" parent="camArm/MainCamera" unique_id=2123975975]
-current = true
-
-[node name="JumpSound" type="AudioStreamPlayer3D" parent="." unique_id=978940363]
-stream = ExtResource("4_gg3t4")
-
-[node name="ZoomIn" type="AudioStreamPlayer" parent="." unique_id=1206163285]
-stream = ExtResource("5_javds")
-
-[node name="ZoomOut" type="AudioStreamPlayer" parent="." unique_id=1128891620]
-stream = ExtResource("6_3ygst")

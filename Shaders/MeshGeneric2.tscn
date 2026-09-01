@@ -10,6 +10,9 @@
 [ext_resource type="PackedScene" uid="uid://oiyjbkjxpf0r" path="res://Models/dasedall.blend" id="7_bkaas"]
 [ext_resource type="Shader" uid="uid://cly23ebh7ho5e" path="res://Textures/Props/NonTriPlanarGeneric.gdshader" id="8_2u8b4"]
 [ext_resource type="Texture2D" uid="uid://brpuvnxi6vb5e" path="res://Models/dasedall_Untitled.png" id="8_bkaas"]
+[ext_resource type="Texture2D" uid="uid://bcofi7as0nxvc" path="res://Textures/Test/daywalker1.png" id="11_tlvbu"]
+[ext_resource type="Texture2D" uid="uid://dp0nxqbfoqpd8" path="res://Textures/Test/daywalkernormals.png" id="12_cg2lg"]
+[ext_resource type="Texture2D" uid="uid://cd6uvb0kq3sld" path="res://Textures/Test/daywalkerdepth.png" id="13_nar7h"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_1cxlk"]
 size = Vector2(1, 1)
@@ -175,6 +178,20 @@ shader_parameter/uv1_offset = Vector3(0, 0, 0)
 material = SubResource("ShaderMaterial_80mfe")
 size = Vector3(8, 1, 8)
 
+[sub_resource type="QuadMesh" id="QuadMesh_1cxlk"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_51m4s"]
+transparency = 2
+alpha_scissor_threshold = 0.5
+alpha_antialiasing_mode = 0
+disable_ambient_light = true
+albedo_texture = ExtResource("11_tlvbu")
+normal_enabled = true
+normal_scale = 2.45
+normal_texture = ExtResource("12_cg2lg")
+heightmap_enabled = true
+heightmap_texture = ExtResource("13_nar7h")
+
 [node name="Node3D" type="Node3D" unique_id=1544938876]
 
 [node name="Moddle" parent="." unique_id=1006448384 instance=ExtResource("1_wbrup")]
@@ -199,7 +216,7 @@ texture = ExtResource("3_ulhab")
 environment = SubResource("Environment_1cxlk")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1336818883]
-transform = Transform3D(1, 0, 0, 0, 0.8533036, 0.52141434, 0, -0.52141434, 0.8533036, 4.7683716e-07, 2.4295795, 1.0080128)
+transform = Transform3D(0.7200233, -0.36183545, 0.59215, 0, 0.8533036, 0.52141434, -0.69394994, -0.37543046, 0.6143985, 4.7683716e-07, 2.4295795, 1.0080128)
 directional_shadow_mode = 0
 sky_mode = 1
 
@@ -238,5 +255,10 @@ shape = SubResource("BoxShape3D_1cxlk")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Map/StaticBody3D2" unique_id=2084218702]
 mesh = SubResource("BoxMesh_1cxlk")
+
+[node name="daywalker" type="MeshInstance3D" parent="." unique_id=273259288]
+transform = Transform3D(200, 0, 0, 0, 200, 0, 0, 0, 200, 166.345, 2.033, -8000)
+mesh = SubResource("QuadMesh_1cxlk")
+surface_material_override/0 = SubResource("StandardMaterial3D_51m4s")
 
 [editable path="RigidBody3D/dasedall"]

@@ -5,3 +5,5 @@ func tick():
 
 func time_since(timestamp):
 	return tick()-timestamp
+
+var current_player : Player

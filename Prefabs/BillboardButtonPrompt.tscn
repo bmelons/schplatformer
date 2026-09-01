@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://dhynjsfixma4j"]
+
+[ext_resource type="Texture2D" uid="uid://onyigmfej5f3" path="res://Textures/Test/glyphsX.png" id="1_kcnt2"]
+[ext_resource type="Shader" uid="uid://b1qge8aow2rch" path="res://Shaders/BillboardSprite.gdshader" id="1_kgrcd"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8megd"]
+render_priority = 0
+shader = ExtResource("1_kgrcd")
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/texture_albedo = ExtResource("1_kcnt2")
+shader_parameter/albedo_texture_size = Vector2i(64, 64)
+shader_parameter/point_size = 1.0
+shader_parameter/roughness = 1.0
+shader_parameter/metallic_texture_channel = Vector4(1, 0, 0, 0)
+shader_parameter/specular = 0.5
+shader_parameter/metallic = 0.0
+shader_parameter/uv1_scale = Vector3(1, 1, 1)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(1, 1, 1)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+
+[sub_resource type="QuadMesh" id="QuadMesh_1cxlk"]
+material = SubResource("ShaderMaterial_8megd")
+
+[node name="BillboardButtonPrompt" type="Node3D" unique_id=1952039513]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=104163673]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("QuadMesh_1cxlk")

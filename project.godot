@@ -11,7 +11,6 @@ config_version=5
 [application]
 
 config/name="schplatformer"
-run/main_scene="uid://du2ltcv6xnmmc"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
 

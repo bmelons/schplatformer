@@ -1,5 +1,5 @@
 extends CharacterBody3D
-
+class_name Player
 @export var SPEED : float = 5 ## movement speed
 @export var JUMP_FORCE : float = 3 ## jump force
 @export var GRAVITY_FORCE : float = 10 ## ok i dont need to label these first four really
@@ -28,6 +28,7 @@ var lastJumpInput : float = 0
 
 
 func _ready() -> void:
+	Main.current_player = self
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED # lock mouse in window
 	camArm.add_excluded_object(self) #keep spring arm from colloding with yourself
 

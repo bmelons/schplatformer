@@ -1,0 +1,242 @@
+[gd_scene format=3 uid="uid://du2ltcv6xnmmc"]
+
+[ext_resource type="PackedScene" uid="uid://yij40s4j3634" path="res://Prefabs/Player.tscn" id="1_wbrup"]
+[ext_resource type="Texture2D" uid="uid://gaa2oprder5o" path="res://Textures/Environment/Prototiles.png" id="1_xb6jt"]
+[ext_resource type="Shader" uid="uid://bly43rmov23sj" path="res://Shaders/Cutout.gdshader" id="2_d1v7h"]
+[ext_resource type="Texture2D" uid="uid://b46s7txa5k7a1" path="res://Textures/Environment/cardboard.png" id="3_5ex1l"]
+[ext_resource type="Texture2D" uid="uid://dn623qrw6rdnh" path="res://Textures/bigdown.png" id="3_ulhab"]
+[ext_resource type="Texture2D" uid="uid://pfhd40ekuqkh" path="res://Textures/Sky/Hammer-export.png" id="5_2ljmv"]
+[ext_resource type="Texture2D" uid="uid://c1yo4rwobu60y" path="res://Textures/Dudes/yo dawg-export.png" id="6_3n6fl"]
+[ext_resource type="PackedScene" uid="uid://oiyjbkjxpf0r" path="res://Models/dasedall.blend" id="7_bkaas"]
+[ext_resource type="Shader" uid="uid://cly23ebh7ho5e" path="res://Textures/Props/NonTriPlanarGeneric.gdshader" id="8_2u8b4"]
+[ext_resource type="Texture2D" uid="uid://brpuvnxi6vb5e" path="res://Models/dasedall_Untitled.png" id="8_bkaas"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_1cxlk"]
+size = Vector2(1, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kpesl"]
+render_priority = -27
+shader = ExtResource("2_d1v7h")
+shader_parameter/sprite_texture = ExtResource("3_ulhab")
+shader_parameter/cardboard_texture = ExtResource("3_5ex1l")
+shader_parameter/cardboard_tint = Color(0.7162962, 0.7162962, 0.7162963, 1)
+shader_parameter/alpha_threshold = 0.026000001235
+shader_parameter/roughness_val = 0.8750000415625
+shader_parameter/normal_depth = 0.1750000083125
+shader_parameter/border_size = 3
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bkaas"]
+render_priority = -27
+shader = ExtResource("2_d1v7h")
+shader_parameter/sprite_texture = ExtResource("6_3n6fl")
+shader_parameter/cardboard_texture = ExtResource("3_5ex1l")
+shader_parameter/cardboard_tint = Color(0.78775924, 0.78775924, 0.78775924, 1)
+shader_parameter/alpha_threshold = 0.026000001235
+shader_parameter/roughness_val = 0.8750000415625
+shader_parameter/normal_depth = 0.1750000083125
+shader_parameter/border_size = 3
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_2m1eh"]
+panorama = ExtResource("5_2ljmv")
+
+[sub_resource type="Sky" id="Sky_kpesl"]
+sky_material = SubResource("PanoramaSkyMaterial_2m1eh")
+radiance_size = 0
+
+[sub_resource type="Environment" id="Environment_1cxlk"]
+background_mode = 2
+background_color = Color(1, 1, 1, 1)
+sky = SubResource("Sky_kpesl")
+ambient_light_source = 2
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_sky_contribution = 0.0
+reflected_light_source = 1
+fog_sky_affect = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d6dm0"]
+render_priority = 0
+shader = ExtResource("8_2u8b4")
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/texture_albedo = ExtResource("8_bkaas")
+shader_parameter/albedo_texture_size = Vector2i(32, 32)
+shader_parameter/point_size = 1.0
+shader_parameter/roughness = 1.0
+shader_parameter/metallic_texture_channel = Vector4(1, 0, 0, 0)
+shader_parameter/specular = 0.5
+shader_parameter/metallic = 0.0
+shader_parameter/uv1_scale = Vector3(1, 1, 1)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(1, 1, 1)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_1cxlk"]
+radius = 0.25
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1cxlk"]
+size = Vector3(8, 1, 8)
+
+[sub_resource type="Shader" id="Shader_if8e2"]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_burley, specular_schlick_ggx, vertex_lighting;
+
+uniform vec4 albedo : source_color = vec4(1.0);
+uniform sampler2D texture_albedo : source_color, filter_nearest_mipmap, repeat_enable;
+uniform float alpha_scissor_threshold : hint_range(0.0, 1.0, 0.001) = 0.5;
+
+uniform float roughness : hint_range(0.0, 1.0) = 1.0;
+uniform sampler2D texture_roughness : hint_roughness_r, filter_nearest_mipmap, repeat_enable;
+
+uniform float metallic : hint_range(0.0, 1.0, 0.01) = 0.0;
+uniform sampler2D texture_metallic : hint_default_white, filter_nearest_mipmap, repeat_enable;
+uniform vec4 metallic_texture_channel = vec4(1.0, 0.0, 0.0, 0.0);
+
+uniform float specular : hint_range(0.0, 1.0, 0.01) = 0.5;
+
+uniform float uv1_blend_sharpness : hint_range(0.0, 150.0, 0.001) = 1.0;
+uniform vec3 uv1_scale = vec3(1.0);
+uniform vec3 uv1_offset = vec3(0.0);
+
+varying vec3 uv1_triplanar_pos;
+varying vec3 uv1_power_normal;
+
+void vertex() {
+    uv1_power_normal = pow(abs(NORMAL), vec3(uv1_blend_sharpness));
+    uv1_power_normal /= dot(uv1_power_normal, vec3(1.0));
+    uv1_triplanar_pos = (VERTEX * uv1_scale + uv1_offset) * vec3(1.0, -1.0, 1.0);
+}
+
+vec4 texture_three_point(sampler2D tex, vec2 uv) { // not my algorithm
+    vec2 tex_size = vec2(textureSize(tex, 0));
+    
+    // Capture continuous derivatives to eliminate mipmap sampling seams
+    vec2 dx = dFdx(uv);
+    vec2 dy = dFdy(uv);
+
+    vec2 p = uv * tex_size - 0.5;
+    vec2 f = fract(p);
+    vec2 base = floor(p);
+
+    // Diagonal split for 3-point interpolation
+    vec2 offset = f - step(1.0, f.x + f.y);
+
+    // Compute exact UV coordinates for the 3 samples
+    vec2 uv0 = (base + 0.5 + step(1.0, f.x + f.y)) / tex_size;
+    vec2 uv1 = (base + 0.5 + vec2(step(1.0, f.x + f.y) - sign(offset.x), step(1.0, f.x + f.y))) / tex_size;
+    vec2 uv2 = (base + 0.5 + vec2(step(1.0, f.x + f.y), step(1.0, f.x + f.y) - sign(offset.y))) / tex_size;
+
+    vec4 c0 = textureGrad(tex, uv - offset / tex_size, dx, dy);
+    vec2 c1off = vec2(offset.x - sign(offset.x), offset.y);
+    vec4 c1 = textureGrad(tex, uv - c1off / tex_size, dx, dy);
+    vec2 c2off = vec2(offset.x, offset.y - sign(offset.y));
+    vec4 c2 = textureGrad(tex, uv - c2off / tex_size, dx, dy);
+
+    return c0 + abs(offset.x) * (c1 - c0) + abs(offset.y) * (c2 - c0);
+}
+
+vec4 triplanar_texture(sampler2D p_sampler, vec3 p_weights, vec3 p_triplanar_pos) {
+    vec4 samp = vec4(0.0);
+    samp += texture_three_point(p_sampler, p_triplanar_pos.xy) * p_weights.z;
+    samp += texture_three_point(p_sampler, p_triplanar_pos.xz) * p_weights.y;
+    samp += texture_three_point(p_sampler, p_triplanar_pos.zy * vec2(-1.0, 1.0)) * p_weights.x;
+    return samp;
+}
+
+void fragment() {
+    vec4 albedo_tex = triplanar_texture(texture_albedo, uv1_power_normal, uv1_triplanar_pos);
+    ALBEDO = albedo.rgb * albedo_tex.rgb;
+
+    float metallic_tex = dot(triplanar_texture(texture_metallic, uv1_power_normal, uv1_triplanar_pos), metallic_texture_channel);
+    METALLIC = metallic_tex * metallic;
+    SPECULAR = specular;
+
+    vec4 roughness_texture_channel = vec4(1.0, 0.0, 0.0, 0.0);
+    float roughness_tex = dot(triplanar_texture(texture_roughness, uv1_power_normal, uv1_triplanar_pos), roughness_texture_channel);
+    ROUGHNESS = roughness_tex * roughness;
+
+    ALPHA *= albedo.a * albedo_tex.a;
+    ALPHA_SCISSOR_THRESHOLD = alpha_scissor_threshold;
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_80mfe"]
+render_priority = 0
+shader = SubResource("Shader_if8e2")
+shader_parameter/albedo = Color(0.9124485, 0.64395976, 0.6963991, 1)
+shader_parameter/texture_albedo = ExtResource("1_xb6jt")
+shader_parameter/alpha_scissor_threshold = 0.5
+shader_parameter/roughness = 1.0
+shader_parameter/metallic = 0.0
+shader_parameter/metallic_texture_channel = Vector4(1, 0, 0, 0)
+shader_parameter/specular = 0.5
+shader_parameter/uv1_blend_sharpness = 1.0
+shader_parameter/uv1_scale = Vector3(1, 1, 1)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_1cxlk"]
+material = SubResource("ShaderMaterial_80mfe")
+size = Vector3(8, 1, 8)
+
+[node name="Node3D" type="Node3D" unique_id=1544938876]
+
+[node name="Moddle" parent="." unique_id=1006448384 instance=ExtResource("1_wbrup")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5346646, 1, 0.27759886)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=930897794]
+transform = Transform3D(-0.99999845, -1.8277176e-05, 0.001745278, -0.0017380817, 0.10173385, -0.99481046, -0.0001593715, -0.9948118, -0.10173373, 2.0025656, 0.9632857, 0.49846476)
+cast_shadow = 0
+mesh = SubResource("PlaneMesh_1cxlk")
+surface_material_override/0 = SubResource("ShaderMaterial_kpesl")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="." unique_id=1157156579]
+transform = Transform3D(-0.99999845, -1.8277176e-05, 0.001745278, -0.0017380817, 0.10173385, -0.99481046, -0.0001593715, -0.9948118, -0.10173373, 0.80427325, 0.9632857, 0.49846476)
+cast_shadow = 0
+mesh = SubResource("PlaneMesh_1cxlk")
+surface_material_override/0 = SubResource("ShaderMaterial_bkaas")
+
+[node name="Polygon2D" type="Polygon2D" parent="." unique_id=152181529]
+texture = ExtResource("3_ulhab")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=2136294667]
+environment = SubResource("Environment_1cxlk")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1336818883]
+transform = Transform3D(1, 0, 0, 0, 0.8533036, 0.52141434, 0, -0.52141434, 0.8533036, 4.7683716e-07, 2.4295795, 1.0080128)
+directional_shadow_mode = 0
+sky_mode = 1
+
+[node name="RigidBody3D" type="RigidBody3D" parent="." unique_id=267337422]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 1.827672, 2.8216872)
+collision_layer = 3
+
+[node name="dasedall" parent="RigidBody3D" unique_id=476617785 instance=ExtResource("7_bkaas")]
+
+[node name="Sphere" parent="RigidBody3D/dasedall" index="0" unique_id=838844763]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
+surface_material_override/0 = SubResource("ShaderMaterial_d6dm0")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D" unique_id=1744150444]
+shape = SubResource("SphereShape3D_1cxlk")
+
+[node name="Map" type="Node3D" parent="." unique_id=296440935]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Map" unique_id=1325504581]
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/StaticBody3D" unique_id=643812312]
+shape = SubResource("BoxShape3D_1cxlk")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/StaticBody3D" unique_id=1406487387]
+mesh = SubResource("BoxMesh_1cxlk")
+
+[node name="StaticBody3D2" type="StaticBody3D" parent="Map" unique_id=703212709]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 7)
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/StaticBody3D2" unique_id=118242021]
+shape = SubResource("BoxShape3D_1cxlk")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Map/StaticBody3D2" unique_id=2084218702]
+mesh = SubResource("BoxMesh_1cxlk")
+
+[editable path="RigidBody3D/dasedall"]

@@ -8,12 +8,13 @@
 [ext_resource type="Texture2D" uid="uid://pfhd40ekuqkh" path="res://Textures/Sky/Hammer-export.png" id="6_tcbsa"]
 [ext_resource type="Script" uid="uid://b6saqwea01jwh" path="res://Scripts/Prop.gd" id="7_ixfqx"]
 [ext_resource type="PackedScene" uid="uid://oiyjbkjxpf0r" path="res://Models/dasedall.blend" id="8_s53ag"]
-[ext_resource type="Shader" uid="uid://cly23ebh7ho5e" path="res://Textures/Props/NonTriPlanarGeneric.gdshader" id="9_35snd"]
+[ext_resource type="Shader" uid="uid://cly23ebh7ho5e" path="res://Shaders/NonTriPlanarGeneric.gdshader" id="9_35snd"]
 [ext_resource type="Texture2D" uid="uid://brpuvnxi6vb5e" path="res://Models/dasedall_Untitled.png" id="10_arffa"]
 [ext_resource type="Texture2D" uid="uid://gaa2oprder5o" path="res://Textures/Environment/Prototiles.png" id="11_1rmfp"]
 [ext_resource type="Texture2D" uid="uid://bcofi7as0nxvc" path="res://Textures/Test/daywalker1.png" id="12_pqn7c"]
 [ext_resource type="Texture2D" uid="uid://cd6uvb0kq3sld" path="res://Textures/Test/daywalkerdepth.png" id="13_u6dsp"]
 [ext_resource type="Texture2D" uid="uid://dp0nxqbfoqpd8" path="res://Textures/Test/daywalkernormals.png" id="14_jdqfn"]
+[ext_resource type="Script" uid="uid://bfdxnbp11jwqh" path="res://Scripts/boncuy.gd" id="17_7d1ur"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_1cxlk"]
 size = Vector2(1, 1)
@@ -56,25 +57,6 @@ ambient_light_color = Color(1, 1, 1, 1)
 ambient_light_sky_contribution = 0.0
 reflected_light_source = 1
 fog_sky_affect = 0.0
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_d6dm0"]
-render_priority = 0
-shader = ExtResource("9_35snd")
-shader_parameter/albedo = Color(1, 1, 1, 1)
-shader_parameter/texture_albedo = ExtResource("10_arffa")
-shader_parameter/albedo_texture_size = Vector2i(32, 32)
-shader_parameter/point_size = 1.0
-shader_parameter/roughness = 1.0
-shader_parameter/metallic_texture_channel = Vector4(1, 0, 0, 0)
-shader_parameter/specular = 0.5
-shader_parameter/metallic = 0.0
-shader_parameter/uv1_scale = Vector3(1, 1, 1)
-shader_parameter/uv1_offset = Vector3(0, 0, 0)
-shader_parameter/uv2_scale = Vector3(1, 1, 1)
-shader_parameter/uv2_offset = Vector3(0, 0, 0)
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_1cxlk"]
-radius = 0.25
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_1cxlk"]
 size = Vector3(8, 1, 8)
@@ -193,49 +175,54 @@ normal_texture = ExtResource("14_jdqfn")
 heightmap_enabled = true
 heightmap_texture = ExtResource("13_u6dsp")
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_7d1ur"]
+size = Vector3(0.5, 3, 3)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d6dm0"]
+render_priority = 0
+shader = ExtResource("9_35snd")
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/texture_albedo = ExtResource("10_arffa")
+shader_parameter/albedo_texture_size = Vector2i(32, 32)
+shader_parameter/point_size = 1.0
+shader_parameter/roughness = 1.0
+shader_parameter/metallic_texture_channel = Vector4(1, 0, 0, 0)
+shader_parameter/specular = 0.5
+shader_parameter/metallic = 0.0
+shader_parameter/uv1_scale = Vector3(1, 1, 1)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(1, 1, 1)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_1cxlk"]
+radius = 0.25
+
 [node name="Node3D" type="Node3D" unique_id=1544938876]
 
 [node name="Moddle" parent="." unique_id=1006448384 instance=ExtResource("1_q53nw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5346646, 1, 0.27759886)
+PUSH_FORCE = 1.0
 AIR_ACCELERATE = 0.2
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=930897794]
+[node name="flours" type="MeshInstance3D" parent="." unique_id=930897794]
 transform = Transform3D(-0.99999845, -1.8277176e-05, 0.001745278, -0.0017380817, 0.10173385, -0.99481046, -0.0001593715, -0.9948118, -0.10173373, 2.0025656, 0.9632857, 0.49846476)
 cast_shadow = 0
 mesh = SubResource("PlaneMesh_1cxlk")
 surface_material_override/0 = SubResource("ShaderMaterial_kpesl")
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="." unique_id=1157156579]
+[node name="yodogg" type="MeshInstance3D" parent="." unique_id=1157156579]
 transform = Transform3D(-0.99999845, -1.8277176e-05, 0.001745278, -0.0017380817, 0.10173385, -0.99481046, -0.0001593715, -0.9948118, -0.10173373, 0.80427325, 0.9632857, 0.49846476)
 cast_shadow = 0
 mesh = SubResource("PlaneMesh_1cxlk")
 surface_material_override/0 = SubResource("ShaderMaterial_bkaas")
 
-[node name="Polygon2D" type="Polygon2D" parent="." unique_id=152181529]
-texture = ExtResource("4_7d1ur")
-
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=2136294667]
 environment = SubResource("Environment_1cxlk")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1336818883]
+[node name="The Sun" type="DirectionalLight3D" parent="." unique_id=1336818883]
 transform = Transform3D(0.7200233, -0.36183545, 0.59215, 0, 0.8533036, 0.52141434, -0.69394994, -0.37543046, 0.6143985, 4.7683716e-07, 2.4295795, 1.0080128)
 directional_shadow_mode = 0
 sky_mode = 1
-
-[node name="RigidBody3D" type="RigidBody3D" parent="." unique_id=267337422]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 1.827672, 2.8216872)
-collision_layer = 3
-script = ExtResource("7_ixfqx")
-Grabbable = true
-
-[node name="dasedall" parent="RigidBody3D" unique_id=476617785 instance=ExtResource("8_s53ag")]
-
-[node name="Sphere" parent="RigidBody3D/dasedall" index="0" unique_id=838844763]
-transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
-surface_material_override/0 = SubResource("ShaderMaterial_d6dm0")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D" unique_id=1744150444]
-shape = SubResource("SphereShape3D_1cxlk")
 
 [node name="Map" type="Node3D" parent="." unique_id=296440935]
 
@@ -260,9 +247,38 @@ shape = SubResource("BoxShape3D_1cxlk")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Map/StaticBody3D2" unique_id=2084218702]
 mesh = SubResource("BoxMesh_1cxlk")
 
-[node name="daywalker" type="MeshInstance3D" parent="." unique_id=273259288]
+[node name="daywalker" type="MeshInstance3D" parent="Map" unique_id=273259288]
 transform = Transform3D(200, 0, 0, 0, 200, 0, 0, 0, 200, 166.345, 2.033, -8000)
 mesh = SubResource("QuadMesh_1cxlk")
 surface_material_override/0 = SubResource("StandardMaterial3D_51m4s")
 
-[editable path="RigidBody3D/dasedall"]
+[node name="Bouncer" type="RigidBody3D" parent="Map" unique_id=618093790]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 2, 0)
+collision_layer = 3
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 10
+script = ExtResource("17_7d1ur")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Bouncer" unique_id=1708220453]
+shape = SubResource("BoxShape3D_7d1ur")
+
+[node name="Props" type="Node3D" parent="." unique_id=638964416]
+
+[node name="dasedall" type="RigidBody3D" parent="Props" unique_id=267337422]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 1.827672, 2.1469123)
+collision_layer = 3
+script = ExtResource("7_ixfqx")
+Grabbable = true
+
+[node name="dasedall" parent="Props/dasedall" unique_id=476617785 instance=ExtResource("8_s53ag")]
+
+[node name="Sphere" parent="Props/dasedall/dasedall" index="0" unique_id=838844763]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
+surface_material_override/0 = SubResource("ShaderMaterial_d6dm0")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Props/dasedall" unique_id=1744150444]
+shape = SubResource("SphereShape3D_1cxlk")
+
+[editable path="Props/dasedall/dasedall"]

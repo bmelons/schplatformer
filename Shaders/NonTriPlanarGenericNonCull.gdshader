@@ -1,7 +1,7 @@
 // NOTE: Shader automatically converted from Godot Engine 4.7.2.stable's StandardMaterial3D.
 
 shader_type spatial;
-render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_burley, specular_disabled, vertex_lighting;
+render_mode blend_mix, depth_draw_opaque, cull_disabled, diffuse_burley, specular_disabled, vertex_lighting;
 
 uniform vec4 albedo : source_color;
 uniform sampler2D texture_albedo : source_color, filter_linear_mipmap, repeat_enable;
@@ -63,6 +63,7 @@ void fragment() {
 	albedo_tex *= COLOR;
 
 	ALBEDO = albedo.rgb * albedo_tex.rgb;
+	ALPHA = albedo.a;
 
 	float metallic_tex = dot(texture_three_point(texture_metallic, base_uv), metallic_texture_channel);
 	METALLIC = metallic_tex * metallic;

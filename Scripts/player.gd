@@ -25,6 +25,8 @@ var lastActiveInput = Vector2.UP
 var gravity : float = 0 # current vertical velocity
 var lastJump : float = 0
 var lastJumpInput : float = 0
+var grabbableProp : Prop = null
+var holding : Prop = null
 
 
 func _ready() -> void:
@@ -42,6 +44,15 @@ func PlaySoundRandPitch(sound):
 	sound.play()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
+func grab():
+	if grabbableProp == null:
+		return
+	holding = grabbableProp
+	grabbableProp = null
+func throw():
+	if holding == null:
+		return
+	holding.linear_velocity = Vector3(0,0,0)
 func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("ui_close_dialog"): get_tree().quit()
 	var rightStick = Input.get_vector("cam_pan_left","cam_pan_right","cam_pan_up","cam_pan_down")*delta*RIGHT_STICK_SENSITIVITY
@@ -49,7 +60,7 @@ func _physics_process(delta: float) -> void:
 	camArm.rotation.x += -camInput.y
 	camArm.rotation.y += -camInput.x
 	camArm.rotation.x = clampf(camArm.rotation.x,deg_to_rad(-80),deg_to_rad(70))
-	
+	#var inputAngle = 
 	camInput = Vector2.ZERO
 	
 	var input_2d = Input.get_vector("move_left", "move_right", "move_up", "move_down")
@@ -79,7 +90,7 @@ func _physics_process(delta: float) -> void:
 		# if theyre holding jump during the rise period
 		#the funky math is the 0.0->1.0 percent of how much rise time the player has left
 		gravity += GRAVITY_FORCE*((Main.tick()-lastJumpInput)/JUMP_MAX_RISE_TIME)*delta
-		print("WAHOOOO")
+		
 
 	
 	
@@ -105,4 +116,5 @@ func _physics_process(delta: float) -> void:
 			if normal.y > 0.5:
 				continue
 			var push_dir = -Vector3(normal.x, 0, normal.z).normalized()
-			collider_obj.apply_impulse(push_dir * PUSH_FORCE, collision.get_position() - collider_obj.global_position)
+			var a = clampf(target_h_vel.length(),0,1)
+			collider_obj.apply_impulse(push_dir * PUSH_FORCE * a, collision.get_position() - collider_obj.global_position)

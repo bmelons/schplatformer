@@ -1,7 +1,10 @@
 [gd_scene format=3 uid="uid://dhynjsfixma4j"]
 
+[ext_resource type="Script" uid="uid://cnk3elnsq7c8q" path="res://Scripts/billboard_button_prompt.gd" id="1_8megd"]
 [ext_resource type="Texture2D" uid="uid://onyigmfej5f3" path="res://Textures/Test/glyphsX.png" id="1_kcnt2"]
 [ext_resource type="Shader" uid="uid://b1qge8aow2rch" path="res://Shaders/BillboardSprite.gdshader" id="1_kgrcd"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_1cxlk"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8megd"]
 render_priority = 0
@@ -19,11 +22,11 @@ shader_parameter/uv1_offset = Vector3(0, 0, 0)
 shader_parameter/uv2_scale = Vector3(1, 1, 1)
 shader_parameter/uv2_offset = Vector3(0, 0, 0)
 
-[sub_resource type="QuadMesh" id="QuadMesh_1cxlk"]
-material = SubResource("ShaderMaterial_8megd")
-
 [node name="BillboardButtonPrompt" type="Node3D" unique_id=1952039513]
+script = ExtResource("1_8megd")
+offset = Vector3(0, 1, 0)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=104163673]
+[node name="prompt" type="MeshInstance3D" parent="." unique_id=104163673]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 mesh = SubResource("QuadMesh_1cxlk")
+surface_material_override/0 = SubResource("ShaderMaterial_8megd")

@@ -4,12 +4,11 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://bn6nscga820fj"
-path="res://.godot/imported/dawg.blend-37ed52b71d882a1025e07a480096ca29.scn"
+valid=false
 
 [deps]
 
 source_file="res://Models/dawg.blend"
-dest_files=["res://.godot/imported/dawg.blend-37ed52b71d882a1025e07a480096ca29.scn"]
 
 [params]
 

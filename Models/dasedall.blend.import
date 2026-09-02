@@ -4,12 +4,11 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://oiyjbkjxpf0r"
-path="res://.godot/imported/dasedall.blend-1c2a02204d5e1f0ae8f796846b230f3a.scn"
+valid=false
 
 [deps]
 
 source_file="res://Models/dasedall.blend"
-dest_files=["res://.godot/imported/dasedall.blend-1c2a02204d5e1f0ae8f796846b230f3a.scn"]
 
 [params]
 

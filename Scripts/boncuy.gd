@@ -1,3 +1,4 @@
+# not finished at ALL i realized i didnt need to implement this at all right now
 extends RigidBody3D
 class_name Bouncer
 func _ready():

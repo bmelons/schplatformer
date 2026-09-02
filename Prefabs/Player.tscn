@@ -7,6 +7,7 @@
 [ext_resource type="AudioStream" uid="uid://1ynnmt2miake" path="res://Audio/kenney_interface-sounds/Audio/maximize_003.ogg" id="5_javds"]
 [ext_resource type="AudioStream" uid="uid://bofhoyjrknkds" path="res://Audio/kenney_interface-sounds/Audio/minimize_003.ogg" id="6_3ygst"]
 [ext_resource type="Texture2D" uid="uid://lrc42cjpxj6d" path="res://Models/textures/image.png" id="7_javds"]
+[ext_resource type="Script" uid="uid://dosxsx5rw7ldc" path="res://Scripts/Shadow.gd" id="8_3ygst"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2u8b4"]
 render_priority = 0
@@ -258,3 +259,6 @@ mesh = SubResource("ArrayMesh_3ygst")
 surface_material_override/0 = SubResource("ShaderMaterial_lhekp")
 surface_material_override/1 = SubResource("StandardMaterial3D_t8lmw")
 surface_material_override/2 = SubResource("ShaderMaterial_lhekp")
+
+[node name="Shadow" type="MeshInstance3D" parent="." unique_id=700088860]
+script = ExtResource("8_3ygst")

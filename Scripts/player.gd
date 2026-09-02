@@ -1,3 +1,4 @@
+#someone come and help me organize my stuff, i feel like this isnt very easy to read
 extends CharacterBody3D
 class_name Player
 @export var SPEED : float = 5 ## movement speed
@@ -25,6 +26,7 @@ var lastActiveInput = Vector2.UP
 var gravity : float = 0 # current vertical velocity
 var lastJump : float = 0
 var lastJumpInput : float = 0
+var lastGroundedTime: float = 0
 var grabbableProp : Prop = null
 var holding : Prop = null
 
@@ -33,29 +35,51 @@ func _ready() -> void:
 	Main.current_player = self
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED # lock mouse in window
 	camArm.add_excluded_object(self) #keep spring arm from colloding with yourself
-
-func _unhandled_input(event: InputEvent) -> void: 
-	if event is InputEventMouseMotion:
-		camInput += event.relative/180 # add mouse movement to camera movement, the movement is processed on a frame by frame basis but the input is handled event by event
+	lastGroundedTime = Main.tick()
 	
 func PlaySoundRandPitch(sound):
 	sound = sounds[sound]
 	sound.pitch_scale = .9 + (randf()*.2)
 	sound.play()
+	
+func _unhandled_input(event: InputEvent) -> void: 
+	if event is InputEventMouseMotion:
+		camInput += event.relative/180 # add mouse movement to camera movement, the movement is processed on a frame by frame basis but the input is handled event by event
+	if event.is_action_pressed("interact"):
+		interact()
+		
+func interact():
+	print("interaction button fired")
+	if false: # placeholder for normal interaction prompts
+		pass
+	elif holding:
+		throw()
+	elif grabbableProp:
+		grab()
+	
+
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func grab():
+	print("hrgh!")
 	if grabbableProp == null:
 		return
 	holding = grabbableProp
 	grabbableProp = null
+	holding.collision_layer = 0
+	holding.collision_mask = 0
 func throw():
 	if holding == null:
 		return
-	holding.linear_velocity = Vector3(0,0,0)
+	holding.set_deferred("disabled",false)
+	holding.linear_velocity = Vector3(0,4,0) + velocity
+	holding.collision_layer = holding.IntendedCollLayer
+	holding.collision_mask = holding.IntendedCollMask
+	holding = null
 func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("ui_close_dialog"): get_tree().quit()
 	var rightStick = Input.get_vector("cam_pan_left","cam_pan_right","cam_pan_up","cam_pan_down")*delta*RIGHT_STICK_SENSITIVITY
+	
 	camInput += rightStick
 	camArm.rotation.x += -camInput.y
 	camArm.rotation.y += -camInput.x
@@ -69,17 +93,24 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		input_2d = input_2d # for later when im implementing persistent aerial velocity
 	
+	var angle =  atan2(lastActiveInput.y,lastActiveInput.x)
 	var move_dir = Vector3(input_2d.x, 0, input_2d.y).rotated(Vector3.UP, camArm.rotation.y)
-	
+	print(angle)
+	if move_dir.length() > .1:
+		$PlayerModel.rotation.y = angle*5
 	
 	if is_on_floor():
 		gravity = 0
+		lastGroundedTime = Main.tick()
 	else:
 		gravity -= GRAVITY_FORCE * delta
 		
+	if holding:
+		holding.set_deferred("disabled",true)
+		holding.global_position = holding.global_position.lerp(global_position + Vector3(0,.5,0),.9)
+		
 	if Input.is_action_just_pressed("jump"):
 		# set the jump to buffer
-		
 		lastJumpInput = Main.tick()
 	if Main.tick()-lastJumpInput <= INPUT_BUFFER_TIME and is_on_floor():
 		# if the player pressed jump within the last INPUT_BUFFER_TIME seconds and theyre on the floor
@@ -91,7 +122,7 @@ func _physics_process(delta: float) -> void:
 		#the funky math is the 0.0->1.0 percent of how much rise time the player has left
 		gravity += GRAVITY_FORCE*((Main.tick()-lastJumpInput)/JUMP_MAX_RISE_TIME)*delta
 		
-
+	
 	
 	
 	var current_h_vel = Vector3(velocity.x, 0.0, velocity.z)

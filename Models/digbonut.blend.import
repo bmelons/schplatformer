@@ -4,12 +4,11 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://djv6243mbolh1"
-path="res://.godot/imported/digbonut.blend-99fe001540dae17d63e3a94fba547e33.scn"
+valid=false
 
 [deps]
 
 source_file="res://Models/digbonut.blend"
-dest_files=["res://.godot/imported/digbonut.blend-99fe001540dae17d63e3a94fba547e33.scn"]
 
 [params]
 

@@ -12,7 +12,6 @@
 [ext_resource type="Texture2D" uid="uid://cd6uvb0kq3sld" path="res://Textures/Test/daywalkerdepth.png" id="13_u6dsp"]
 [ext_resource type="Texture2D" uid="uid://dp0nxqbfoqpd8" path="res://Textures/Test/daywalkernormals.png" id="14_jdqfn"]
 [ext_resource type="Texture2D" uid="uid://b6k5tc33xv3w3" path="res://Textures/Props/dasedall.png" id="14_q53nw"]
-[ext_resource type="Script" uid="uid://bfdxnbp11jwqh" path="res://Scripts/boncuy.gd" id="17_7d1ur"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_1cxlk"]
 size = Vector2(1, 1)
@@ -57,7 +56,7 @@ reflected_light_source = 1
 fog_sky_affect = 0.0
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_1cxlk"]
-size = Vector3(8, 1, 8)
+size = Vector3(128, 1, 8)
 
 [sub_resource type="Shader" id="Shader_if8e2"]
 code = "shader_type spatial;
@@ -157,7 +156,7 @@ shader_parameter/uv1_offset = Vector3(0, 0, 0)
 
 [sub_resource type="BoxMesh" id="BoxMesh_1cxlk"]
 material = SubResource("ShaderMaterial_80mfe")
-size = Vector3(8, 1, 8)
+size = Vector3(128, 1, 8)
 
 [sub_resource type="QuadMesh" id="QuadMesh_1cxlk"]
 
@@ -172,9 +171,6 @@ normal_scale = 2.45
 normal_texture = ExtResource("14_jdqfn")
 heightmap_enabled = true
 heightmap_texture = ExtResource("13_u6dsp")
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_7d1ur"]
-size = Vector3(0.5, 3, 3)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_1cxlk"]
 radius = 0.25
@@ -196,6 +192,7 @@ rings = 6
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5346646, 1, 0.27759886)
 PUSH_FORCE = 1.0
 AIR_ACCELERATE = 0.2
+MODEL_ROT_SPEED = 8.0
 
 [node name="flours" type="MeshInstance3D" parent="." unique_id=930897794]
 transform = Transform3D(-0.99999845, -1.8277176e-05, 0.001745278, -0.0017380817, 0.10173385, -0.99481046, -0.0001593715, -0.9948118, -0.10173373, 2.0025656, 0.9632857, 0.49846476)
@@ -245,18 +242,6 @@ transform = Transform3D(200, 0, 0, 0, 200, 0, 0, 0, 200, 166.345, 2.033, -8000)
 mesh = SubResource("QuadMesh_1cxlk")
 surface_material_override/0 = SubResource("StandardMaterial3D_51m4s")
 
-[node name="Bouncer" type="RigidBody3D" parent="Map" unique_id=618093790]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 2, 0)
-collision_layer = 3
-freeze = true
-freeze_mode = 1
-contact_monitor = true
-max_contacts_reported = 10
-script = ExtResource("17_7d1ur")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Bouncer" unique_id=1708220453]
-shape = SubResource("BoxShape3D_7d1ur")
-
 [node name="Props" type="Node3D" parent="." unique_id=638964416]
 
 [node name="dasedall" type="RigidBody3D" parent="Props" unique_id=267337422]
@@ -265,8 +250,6 @@ collision_layer = 3
 freeze_mode = 1
 script = ExtResource("7_ixfqx")
 Grabbable = true
-
-[node name="dasedall" parent="Props/dasedall" unique_id=476617785]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Props/dasedall" unique_id=1744150444]
 shape = SubResource("SphereShape3D_1cxlk")

@@ -12,7 +12,7 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2u8b4"]
 render_priority = 0
 shader = ExtResource("1_x3d5u")
-shader_parameter/albedo = Color(1, 1, 1, 0.23921569)
+shader_parameter/albedo = Color(1, 1, 1, 0.9764706)
 shader_parameter/texture_albedo = ExtResource("2_b43ah")
 shader_parameter/albedo_texture_size = Vector2i(0, 0)
 shader_parameter/point_size = 0.0
@@ -123,6 +123,13 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_44tkk")
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3ygst"]
+albedo_texture = ExtResource("7_javds")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_t8lmw"]
+transparency = 1
+albedo_color = Color(1, 1, 1, 0)
+
 [sub_resource type="Shader" id="Shader_v7r1b"]
 code = "// NOTE: Shader automatically converted from Godot Engine 4.7.2.stable's StandardMaterial3D.
 
@@ -211,10 +218,6 @@ shader_parameter/uv1_offset = Vector3(0, 0, 0)
 shader_parameter/uv2_scale = Vector3(1, 1, 1)
 shader_parameter/uv2_offset = Vector3(0, 0, 0)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_t8lmw"]
-transparency = 1
-albedo_color = Color(1, 1, 1, 0)
-
 [node name="Moddle" type="CharacterBody3D" unique_id=1006448384]
 platform_on_leave = 2
 script = ExtResource("1_b43ah")
@@ -255,8 +258,9 @@ stream = ExtResource("6_3ygst")
 
 [node name="PlayerModel" type="MeshInstance3D" parent="." unique_id=214972028]
 transform = Transform3D(0.165, 0, 0, 0, 0.19, 0, 0, 0, 0.165, 0, -0.048501864, 0)
+visible = false
 mesh = SubResource("ArrayMesh_3ygst")
-surface_material_override/0 = SubResource("ShaderMaterial_lhekp")
+surface_material_override/0 = SubResource("StandardMaterial3D_3ygst")
 surface_material_override/1 = SubResource("StandardMaterial3D_t8lmw")
 surface_material_override/2 = SubResource("ShaderMaterial_lhekp")
 

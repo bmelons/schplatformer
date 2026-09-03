@@ -10,16 +10,18 @@ class_name Player
 @export var JUMP_MAX_RISE_TIME : float = 0.2 ## how long you can hold jump to retain jump force
 @export var ACCEL_FACTOR : float = 40.0
 @export var AIR_ACCELERATE : float = .1 ## air acceleration percentage
+@export var MODEL_ROT_SPEED : float = 10
 
 @onready var camArm : SpringArm3D = $camArm
 @onready var camera : Camera3D = $camArm/MainCamera
 @onready var collider : CollisionShape3D = $Collider
+@onready var PlayerModel : Node3D = $PlayerModel
 @onready var sounds : Dictionary = {
 	"Jump": $JumpSound,
 	"ZoomIn": $ZoomIn,
 	"ZoomOut": $ZoomOut,
-	
 }
+@onready var initialYScale : float = PlayerModel.scale.y
 # Called when the node enters the scene tree for the first time.
 var camInput = Vector2.ZERO
 var lastActiveInput = Vector2.UP
@@ -29,7 +31,7 @@ var lastJumpInput : float = 0
 var lastGroundedTime: float = 0
 var grabbableProp : Prop = null
 var holding : Prop = null
-
+@onready var angle =  atan2(-lastActiveInput.y,lastActiveInput.x) + camArm.rotation.y
 
 func _ready() -> void:
 	Main.current_player = self
@@ -77,7 +79,6 @@ func throw():
 	holding.collision_mask = holding.IntendedCollMask
 	holding = null
 func _physics_process(delta: float) -> void:
-	if Input.is_action_just_pressed("ui_close_dialog"): get_tree().quit()
 	var rightStick = Input.get_vector("cam_pan_left","cam_pan_right","cam_pan_up","cam_pan_down")*delta*RIGHT_STICK_SENSITIVITY
 	
 	camInput += rightStick
@@ -93,12 +94,13 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		input_2d = input_2d # for later when im implementing persistent aerial velocity
 	
-	var angle =  atan2(lastActiveInput.y,lastActiveInput.x)
+	
 	var move_dir = Vector3(input_2d.x, 0, input_2d.y).rotated(Vector3.UP, camArm.rotation.y)
 	print(angle)
-	if move_dir.length() > .1:
-		$PlayerModel.rotation.y = angle*5
-	
+	if velocity.length() > .1:
+		angle =  atan2(-velocity.z,velocity.x) 
+	PlayerModel.rotation.y = rotate_toward(PlayerModel.rotation.y,angle,MODEL_ROT_SPEED*delta)
+	PlayerModel.scale.y = lerpf(PlayerModel.scale.y,initialYScale,.05)
 	if is_on_floor():
 		gravity = 0
 		lastGroundedTime = Main.tick()
@@ -116,6 +118,7 @@ func _physics_process(delta: float) -> void:
 		# if the player pressed jump within the last INPUT_BUFFER_TIME seconds and theyre on the floor
 		gravity = JUMP_FORCE
 		lastJump = Main.tick()
+		PlayerModel.scale.y = initialYScale*1.2
 		PlaySoundRandPitch("Jump")
 	elif Input.is_action_pressed("jump") and Main.tick()-lastJump < JUMP_MAX_RISE_TIME:
 		# if theyre holding jump during the rise period
